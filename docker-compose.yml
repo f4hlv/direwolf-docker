@@ -1,0 +1,17 @@
+version: '3'
+
+services:
+  direwolf:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    tty: true
+    stdin_open: true
+    container_name: direwolf
+    volumes:
+      - /home/pi/docker/direwolf/direwolf.conf:/direwolf/direwolf.conf
+    devices:
+      - /dev/snd:/dev/snd
+      - /dev/gpiomem:/dev/gpiomem
+#    privileged: true
+    restart: unless-stopped
