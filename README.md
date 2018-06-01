@@ -43,7 +43,7 @@ $ sudo easy_install pip && sudo pip install docker-compose
 # Build and Run direwolf
 ```console
 $ git clone https://github.com/f4hlv/direwolf-docker.git
-$ cd mmdvm-docker
+$ cd direwolf-docker
 ```
 Edit docker-compose.yml and run
 ```console
