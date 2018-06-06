@@ -50,7 +50,7 @@ Edit docker-compose.yml and run
 $ docker-compose up -d
 ```
 ## Volume
-- `/home/pi/direwolf-docker/direwolf.conf:/direwolf/direwolf.conf` Path to the direwolf.conf File
+- `./direwolf.conf:/direwolf/direwolf.conf` Path to the direwolf.conf File
 
 # Update
 ```console
