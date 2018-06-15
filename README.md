@@ -71,7 +71,7 @@ services:
     stdin_open: true
     container_name: direwolf
     volumes:
-      - /home/pi/docker/direwolf/direwolf.conf:/direwolf/direwolf.conf
+      - ./direwolf.conf/direwolf.conf:/direwolf/direwolf.conf
     devices:
       - /dev/snd:/dev/snd
       - /dev/gpiomem:/dev/gpiomem
