@@ -60,7 +60,7 @@ $ docker-compose up -d
 
 # docker-compose
 ```yml
-version: '3'
+version: '3.7'
 
 services:
   direwolf:
