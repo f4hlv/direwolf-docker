@@ -60,7 +60,7 @@ $ docker-compose up -d
 
 # docker-compose
 ```yml
-version: '3.7'
+version: '3'
 
 services:
   direwolf:
@@ -75,6 +75,5 @@ services:
     devices:
       - /dev/snd:/dev/snd
       - /dev/gpiomem:/dev/gpiomem
-#    privileged: true
     restart: unless-stopped
 ```
