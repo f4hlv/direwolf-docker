@@ -66,7 +66,7 @@ services:
   direwolf:
     build:
       context: .
-      dockerfile: Dockerfile
+      dockerfile: Dockerfile.debian
     tty: true
     stdin_open: true
     container_name: direwolf
