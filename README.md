@@ -34,10 +34,9 @@ $ sudo curl -L https://github.com/docker/compose/releases/download/1.21.0/docker
 $ chmod +x /usr/local/bin/docker-compose
 ```
 
-* (Raspberry)
+* (Raspberry-Buster)
 ```console
-$ sudo apt-get -y install python-setuptools
-$ sudo easy_install pip && sudo pip install docker-compose
+$ sudo apt -y install docker-compose
 ```
 
 # Build and Run direwolf
