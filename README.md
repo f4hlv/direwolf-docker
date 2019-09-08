@@ -36,7 +36,7 @@ $ chmod +x /usr/local/bin/docker-compose
 
 * (Raspberry-Buster)
 ```console
-$ sudo apt -y install docker-compose
+$ sudo apt install docker-compose
 ```
 
 # Build and Run direwolf
