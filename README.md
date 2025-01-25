@@ -59,7 +59,7 @@ services:
     devices:
       - "/dev/snd:/dev/snd"
       # - "/dev/gpiomem:/dev/gpiomem"
-      - /dev/gpiochip0:/dev/piochip0 # --> The RPi model 5, uses gpiochip4
+      - /dev/gpiochip0:/dev/gpiochip0 # --> The RPi model 5, uses gpiochip4
     environment:
       - TZ=Europe/Paris
     tty: true
