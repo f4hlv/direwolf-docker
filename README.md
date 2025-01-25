@@ -27,18 +27,6 @@ $ curl -fsSL get.docker.com -o get-docker.sh
 $ sudo sh get-docker.sh
 ```
 
-# Install docker-compose
-* (Debian)
-```console
-$ sudo curl -L https://github.com/docker/compose/releases/download/1.21.0/docker-compose-$(uname -s)-$(uname -m) -o /usr/local/bin/docker-compose
-$ chmod +x /usr/local/bin/docker-compose
-```
-
-* (Raspberry-Buster)
-```console
-$ sudo apt install docker-compose
-```
-
 # Build and Run direwolf
 ```console
 $ git clone https://github.com/f4hlv/direwolf-docker.git
@@ -46,33 +34,34 @@ $ cd direwolf-docker
 ```
 Edit docker-compose.yml and run
 ```console
-$ docker-compose up -d
+$ docker compose up -d
 ```
 ## Volume
-- `./direwolf.conf:/direwolf/direwolf.conf` Path to the direwolf.conf File
+- `./direwolf.conf:/usr/local/etc/direwolf/direwolf.conf:ro` Path to the direwolf.conf File
 
 # Update
 ```console
-$ docker-compose build --no-cache
-$ docker-compose up -d
+$ docker compose build --no-cache
+$ docker compose up -d
 ```
 
 # docker-compose
 ```yml
-version: '3'
-
 services:
   direwolf:
     build:
       context: .
-      dockerfile: Dockerfile.debian
+      dockerfile: Dockerfile
+    container_name: direwolf
+    restart: unless-stopped
+    volumes:
+      - ./direwolf.conf:/usr/local/etc/direwolf/direwolf.conf:ro
+    devices:
+      - "/dev/snd:/dev/snd"
+      # - "/dev/gpiomem:/dev/gpiomem"
+      - /dev/gpiochip0:/dev/piochip0 # --> The RPi model 5, uses gpiochip4)
+    environment:
+      - TZ=Europe/Paris
     tty: true
     stdin_open: true
-    container_name: direwolf
-    volumes:
-      - ./direwolf.conf:/direwolf/direwolf.conf
-    devices:
-      - /dev/snd:/dev/snd
-      - /dev/gpiomem:/dev/gpiomem
-    restart: unless-stopped
 ```

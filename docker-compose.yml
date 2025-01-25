@@ -1,16 +1,22 @@
-version: '3'
-
 services:
   direwolf:
+    # image: direwolf:latest
     build:
       context: .
-      dockerfile: Dockerfile.debian
+      dockerfile: Dockerfile
+    container_name: direwolf
+    restart: unless-stopped
+    volumes:
+      - ./direwolf.conf:/usr/local/etc/direwolf/direwolf.conf:ro
+    devices:
+      - "/dev/snd:/dev/snd"   # Pour la carte son USB
+      # - "/dev/gpiomem:/dev/gpiomem" # Pour l'accès GPIO old OS
+      - /dev/gpiochip0:/dev/piochip0 # Pour l'accès GPIO Bookworm (The RPi model 5, uses gpiochip4)
+    ports:
+      - "8000:8000"
+    environment:
+      - TZ=Europe/Paris
     tty: true
     stdin_open: true
-    container_name: direwolf
-    volumes:
-      - ./direwolf.conf:/direwolf/direwolf.conf
-    devices:
-      - /dev/snd:/dev/snd
-      - /dev/gpiomem:/dev/gpiomem
-    restart: unless-stopped
+    # --> Run basic direwolf without supervisord
+    # command: ["/bin/sh", "-c", "/usr/local/bin/direwolf -c /usr/local/etc/direwolf/direwolf.conf"]  
