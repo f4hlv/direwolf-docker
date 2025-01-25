@@ -11,7 +11,7 @@ services:
     devices:
       - "/dev/snd:/dev/snd"   # Pour la carte son USB
       # - "/dev/gpiomem:/dev/gpiomem" # Pour l'accès GPIO old OS
-      - /dev/gpiochip0:/dev/piochip0 # Pour l'accès GPIO Bookworm (The RPi model 5, uses gpiochip4)
+      - /dev/gpiochip0:/dev/gpiochip0 # Pour l'accès GPIO Bookworm (The RPi model 5, uses gpiochip4)
     ports:
       - "8000:8000"
     environment:
