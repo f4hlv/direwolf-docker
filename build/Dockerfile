@@ -38,7 +38,7 @@ RUN apk add --no-cache \
 
 COPY --from=build /usr/local /usr/local
 
-COPY build/entrypoint.sh /entrypoint.sh
+COPY entrypoint.sh /entrypoint.sh
 RUN chmod +x /entrypoint.sh
 
 # USER direwolf

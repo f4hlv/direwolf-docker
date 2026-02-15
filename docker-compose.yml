@@ -2,21 +2,23 @@ services:
   direwolf:
     # image: direwolf:latest
     build:
-      context: .
+      context: ./build
       dockerfile: Dockerfile
     container_name: direwolf
     restart: unless-stopped
+
     volumes:
-      - ./direwolf.conf:/usr/local/etc/direwolf/direwolf.conf:ro
+      - ./config/direwolf.conf:/etc/direwolf/direwolf.conf:rw
+      # - ./data:/var/lib/direwolf:rw
+
     devices:
-      - "/dev/snd:/dev/snd"   # Pour la carte son USB
-      # - "/dev/gpiomem:/dev/gpiomem" # Pour l'accès GPIO old OS
+      - /dev/snd:/dev/snd  # Pour la carte son USB
+      # - /dev/gpiomem:/dev/gpiomem # Pour l'accès GPIO old OS
       - /dev/gpiochip0:/dev/gpiochip0 # Pour l'accès GPIO Bookworm (The RPi model 5, uses gpiochip4)
+
     ports:
-      - "8001:8001/TCP"     # Kiss TCP
+      - "8001:8001/tcp" # KISS TCP (si tu utilises KISSPORT 8001)
+    
     environment:
       - TZ=Europe/Paris
-    tty: true
-    stdin_open: true
-    # --> Run basic direwolf without supervisord
-    # command: ["/bin/sh", "-c", "/usr/local/bin/direwolf -c /usr/local/etc/direwolf/direwolf.conf"]  
+    # command: ["/bin/sh", "-c", "sleep 2 && /usr/local/bin/direwolf -c /usr/local/etc/direwolf/direwolf.conf"]  
