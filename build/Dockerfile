@@ -32,10 +32,6 @@ RUN apk add --no-cache \
     libgpiod \
     ca-certificates
 
-# RUN addgroup -S direwolf && adduser -S -G direwolf direwolf && \
-#     mkdir -p /etc/direwolf /var/lib/direwolf && \
-#     chown -R direwolf:direwolf /etc/direwolf /var/lib/direwolf
-
 COPY --from=build /usr/local /usr/local
 
 COPY entrypoint.sh /entrypoint.sh

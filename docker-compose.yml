@@ -8,8 +8,8 @@ services:
     restart: unless-stopped
 
     volumes:
-      - ./config/direwolf.conf:/etc/direwolf/direwolf.conf:rw
-      # - ./data:/var/lib/direwolf:rw
+      - ./config/direwolf.conf:/etc/direwolf/direwolf.conf:ro
+      # - ./data:/var/lib/direwolf
 
     devices:
       - /dev/snd:/dev/snd  # Pour la carte son USB
@@ -21,4 +21,4 @@ services:
     
     environment:
       - TZ=Europe/Paris
-    # command: ["/bin/sh", "-c", "sleep 2 && /usr/local/bin/direwolf -c /usr/local/etc/direwolf/direwolf.conf"]  
+      # - DW_CONFIG=/etc/direwolf/direwolf.conf
