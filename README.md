@@ -1,67 +1,165 @@
-# Dire Wolf #
+# Dire Wolf sous Docker
 
-### Decoded Information from Radio Emissions for Windows Or Linux Fans ###
+Ce projet permet de faire tourner **Dire Wolf** (TNC logiciel AX.25 / APRS) dans un conteneur **Docker basé sur Alpine Linux**, avec accès audio ALSA et configuration persistante.
 
-In the early days of Amateur Packet Radio, it was necessary to use an expensive “Terminal Node Controller” (TNC) with specialized hardware.  Those days are gone.  You can now get better results at lower cost by connecting your radio to the “soundcard” interface of a computer and using software to decode the signals.
+La compilation de Dire Wolf est faite depuis les sources officielles.
 
-Why settle for mediocre receive performance from a 1980's technology  TNC using an old modem chip?   Dire Wolf decodes over 1000 error-free frames from Track 2 of the [WA8LMF TNC Test CD](https://github.com/wb2osz/direwolf/tree/dev/doc/WA8LMF-TNC-Test-CD-Results.pdf), leaving all the hardware TNCs, and first generation "soundcard" modems, behind in the dust.
+---
 
-![](tnc-test-cd-results.png)
+## 📁 Arborescence
 
- 
-Dire Wolf is a modern software replacement for the old 1980's style TNC built with special hardware.
-
-Without any additional software, it can perform as:
-
- - APRS GPS Tracker
- - Digipeater
- - Internet Gateway (IGate)
-- [APRStt](http://www.aprs.org/aprstt.html) gateway
-
-
-It can also be used as a virtual TNC for other applications such as [APRSIS32](http://aprsisce.wikidot.com/), [UI-View32](http://www.ui-view.net/), [Xastir](http://xastir.org/index.php/Main_Page), [APRS-TW](http://aprstw.blandranch.net/), [YAAC](http://www.ka2ddo.org/ka2ddo/YAAC.html), [UISS](http://users.belgacom.net/hamradio/uiss.htm), [Linux AX25](http://www.linux-ax25.org/wiki/Main_Page), [SARTrack](http://www.sartrack.co.nz/index.html), [RMS Express](http://www.winlink.org/RMSExpress), [BPQ32](http://www.cantab.net/users/john.wiseman/Documents/BPQ32.html), [Outpost PM](http://www.outpostpm.org/), and many others.
-
-# Install Docker
-```console
-$ curl -fsSL get.docker.com -o get-docker.sh
-$ sudo sh get-docker.sh
+```
+direwolf-docker/
+├─ docker-compose.yml
+├─ build/
+│  ├─ Dockerfile
+│  └─ entrypoint.sh
+├─ config/
+│  └─ direwolf.conf        # optionnel (auto-généré si absent)
+└─ data/
 ```
 
-# Build and Run direwolf
-```console
-$ git clone https://github.com/f4hlv/direwolf-docker.git
-$ cd direwolf-docker
-```
-Edit docker-compose.yml and run
-```console
-$ docker compose up -d
-```
-## Volume
-- `./direwolf.conf:/usr/local/etc/direwolf/direwolf.conf:ro` Path to the direwolf.conf File
+---
 
-# Update
-```console
-$ docker compose build --no-cache
-$ docker compose up -d
+## 🚀 Fonctionnalités
+
+- Image Docker Alpine légère
+- Compilation native de Dire Wolf
+- Accès audio ALSA (`/dev/snd`)
+- Configuration persistante
+- Génération automatique d’un `direwolf.conf` minimal
+- Support :
+  - KISS TCP
+  - VOX / PTT matériel
+  - APRS (iGate possible)
+
+---
+
+## 🧱 Prérequis
+
+- Linux (Docker avec accès à `/dev/snd`)
+- Docker + Docker Compose
+- Carte son fonctionnelle (USB, HAT, etc.)
+
+Vérification audio côté hôte :
+
+```bash
+aplay -l
+ls /dev/snd
 ```
 
-# docker-compose
-```yml
-services:
-  direwolf:
-    build:
-      context: .
-      dockerfile: Dockerfile
-    container_name: direwolf
-    restart: unless-stopped
-    volumes:
-      - ./direwolf.conf:/usr/local/etc/direwolf/direwolf.conf:ro
-    devices:
-      - "/dev/snd:/dev/snd"
-      # - "/dev/gpiomem:/dev/gpiomem"
-      - /dev/gpiochip0:/dev/gpiochip0 # --> The RPi model 5, uses gpiochip4
-    environment:
-      - TZ=Europe/Paris
-    tty: true
-    stdin_open: true
+---
+
+## 🛠️ Build de l’image
+
+```bash
+docker compose build
 ```
+
+---
+
+## ▶️ Lancement
+
+```bash
+docker compose up -d
+```
+
+Logs :
+
+```bash
+docker logs -f direwolf
+```
+
+---
+
+## ⚙️ Configuration
+
+### Variables d’environnement (docker-compose.yml)
+
+| Variable | Description | Exemple |
+|--------|------------|---------|
+| `TZ` | Fuseau horaire | `Europe/Paris` |
+
+---
+
+### Configuration Dire Wolf
+
+Deux possibilités :
+
+#### 1️⃣ Config automatique (recommandé pour démarrer)
+
+Si `config/direwolf.conf` n’existe pas, le conteneur génère automatiquement un fichier minimal au premier démarrage.
+
+#### 2️⃣ Config personnalisée
+
+Créer/modifier :
+
+```bash
+config/direwolf.conf
+```
+
+Exemple minimal :
+
+```conf
+MYCALL F0XXX-10
+ADEVICE plughw:0,0
+CHANNELS 1
+MODEM 1200
+PTT VOX
+KISSPORT 8001
+```
+
+---
+
+## 🔌 Accès audio
+
+Le conteneur utilise ALSA via :
+
+```yaml
+devices:
+  - /dev/snd:/dev/snd
+```
+
+⚠️ Le nom du device (`plughw:0,0`) dépend de l’ordre des cartes son.
+
+Pour être plus robuste :
+
+```conf
+ADEVICE plughw:CARD=Device,DEV=0
+```
+
+---
+
+## 🌐 KISS TCP
+
+Par défaut, Dire Wolf ouvre un port KISS TCP :
+
+- Port : `8001`
+- Accessible depuis l’hôte : `localhost:8001`
+
+---
+
+## 📡 APRS / iGate (optionnel)
+
+Pour activer un iGate APRS-IS, ajouter dans `direwolf.conf` :
+
+```conf
+IGLOGIN F0XXX-10 12345
+IGSERVER france.aprs2.net 14580
+IGTXVIA 0
+```
+
+---
+
+## 🔧 PTT
+
+Méthodes possibles :
+
+- `VOX`
+- `CM108`
+- `GPIO`
+- `RTS` / `DTR`
+
+---
+
+📻 73 & bons paquets AX.25 !
