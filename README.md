@@ -111,7 +111,7 @@ KISSPORT 8001
 
 ---
 
-## 🔌 Accès audio
+## 🔉 Accès audio
 
 Le conteneur utilise ALSA via :
 
@@ -160,6 +160,10 @@ Méthodes possibles :
 - `GPIO`
 - `RTS` / `DTR`
 
+Exemple: GPIOD 18 sur un Raspberry Pi
+`PTT GPIOD gpiochip0 18`
+Ancien OS Rasbian:
+`PTT GPIO 18`
 ---
 
 📻 73 & bons paquets AX.25 !
