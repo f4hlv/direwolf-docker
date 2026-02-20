@@ -1,4 +1,4 @@
-# 
+# --- Construction de l'image ---
 FROM alpine:3.20 AS build
 
 RUN apk add --no-cache \
@@ -44,4 +44,4 @@ ENV DW_CONFIG=/etc/direwolf/direwolf.conf
 ENV TZ=Europe/Paris
 
 ENTRYPOINT ["/entrypoint.sh"]
-CMD ["direwolf", "-c", "/etc/direwolf/direwolf.conf", "-t", "0"]
+CMD ["direwolf", "-t", "0"]

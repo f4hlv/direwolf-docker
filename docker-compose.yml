@@ -21,4 +21,4 @@ services:
     
     environment:
       - TZ=Europe/Paris
-      # - DW_CONFIG=/etc/direwolf/direwolf.conf
+      - DW_CONFIG=/etc/direwolf/direwolf.conf

@@ -15,4 +15,18 @@ if [ ! -s "$CONFIG" ]; then
 fi
 
 echo "[entrypoint] OK: config trouvée: $CONFIG"
+
+
+if [ "${1:-}" = "direwolf" ]; then
+  has_c=0
+  for arg in "$@"; do
+    [ "$arg" = "-c" ] && has_c=1 && break
+  done
+
+  if [ "$has_c" -eq 0 ]; then
+    shift
+    set -- direwolf -c "$CONFIG" "$@"
+  fi
+fi
+
 exec "$@"
