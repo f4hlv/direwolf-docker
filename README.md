@@ -4,6 +4,8 @@ Ce projet permet de faire tourner **Dire Wolf** (TNC logiciel AX.25 / APRS) dans
 
 La compilation de Dire Wolf est faite depuis les sources officielles.
 
+Instructions plus détaillés sur [blog.f4hlv.fr/dire-wolf-aprs-ax-25-avec-docket](https://blog.f4hlv.fr/dire-wolf-aprs-ax-25-avec-docker/)
+
 ---
 
 ## 📁 Arborescence
